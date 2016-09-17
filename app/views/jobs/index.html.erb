@@ -1,0 +1,58 @@
+
+
+<%= link_to "Reset Jobs", reset_jobs_path, class: 'btn btn-danger pull-right' %>
+<br />
+<br />
+
+<h4>Window refresh rate is 5seconds</h4>
+
+<h5><i>Slow - Sleeps 10, Normal - Sleeps 1, Fast - No Sleep</i></h5>
+
+<div class='acts col-md-6'>
+<table class='table table-striped'>
+  <thead>
+    <th>Job</th>
+    <th colspan=1>Enqueue</th>
+  </thead>
+
+  <% %w(slow normal fast).each do |val| %>
+  <tr>
+    <td><%=  val.camelize %>Job</td>
+    <td><%= link_to 'Queue', queue_jobs_path(val, :high) %></td>
+  </tr>
+  <% end %>
+</table>
+</div>
+
+<div class='col-md-6'>
+
+
+    <div class='panel panel-default'>
+    <div class='panel-heading'><h4>Running Jobs</h4></div>
+      <div class='panel-body'>
+      <table class='table table-striped'>
+        <thead>
+          <th>Id</th>
+          <th>Handler</th>
+          <th>Started At</th>
+          <th>Executing</th>
+        </thead>
+
+        <% JobsController::JOB_QUEUE.each do |ind, job| %>
+          <tr>
+            <td><%= ind %></td>
+            <td><%= job[:job] %></td>
+            <td><%= job[:started_at] %></td>
+            <td><%= job[:thread].status %></td>
+          </tr>
+        <% end %>
+      </table>
+     </div>
+    </div>
+</div>
+
+<script>
+
+window.setTimeout(function() { window.location.reload(); }, 5000);
+
+</script>
